@@ -43,7 +43,8 @@ module.exports = {
     // Stick it into the "path" folder with that file name
     output: {
         filename: 'bundle.[hash].js',
-        path: `${__dirname}/build`
+        path: `${__dirname}/build`,
+        publicPath: process.env.CDN_URL,
     },
 
     module: {
@@ -55,9 +56,31 @@ module.exports = {
                 loader: 'babel-loader'
             },
             // If it's a .scss file
+            // {
+            //     test: /\.scss$/,
+            //     loader : 'style-loader!css-loader!sass-loader'
+            // },
             {
                 test: /\.scss$/,
-                loader : 'style-loader!css-loader!sass-loader'
+                loader: ExtractPlugin.extract({
+                    // These get loaded in reverse order and the output of one pipes into the other (think of a then)
+                    use: [
+                        {
+                            loader: 'css-loader', 
+                            options: {
+                                sourceMap:true
+                            }
+                        },
+                        'resolve-url-loader',
+                        {
+                            loader: 'sass-loader',
+                            options: {
+                                sourceMap: true,
+                                includePaths:[`${__dirname}/src/style`]
+                            }
+                        }
+                    ]
+                })
             },
 
         ]
