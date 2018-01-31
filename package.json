@@ -6,8 +6,6 @@
   "scripts": {
     "test": "jest -i --verbose",
     "watch": "webpack-dev-server --inline --hot --public $C9_HOSTNAME --host $IP --port $PORT",
-    "start": "node index.js",
-    "heroku-postbuild": "webpack",
     "build": "webpack"
   },
   "jest": {
